@@ -41,15 +41,6 @@ public class GameTest {
 	}
 
 
-	@Test
-	public void gamePlayTest()
-	{
-		//assertEquals(true, game.gamePlay(player, map3));
-		//assertEquals(false, game.gamePlay(player, map4));
-
-
-	}
-
 
 	@Test
 	public void moveChecksTest()
