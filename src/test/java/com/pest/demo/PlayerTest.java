@@ -1,4 +1,4 @@
-package com.pest.demo;
+//package com.pest.demo;
 
 import static org.junit.Assert.*;
 
@@ -31,7 +31,7 @@ public class PlayerTest {
 	public void testGetPosition() {
 		assertEquals((player.position).x, player.getPosition().x);
 	}
-
+	
 	@Test
 	public void testMove() {
 		player.move('d');

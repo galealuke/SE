@@ -1,4 +1,4 @@
-package com.pest.demo;
+//package com.pest.demo;
 
 import static org.junit.Assert.*;
 
@@ -41,17 +41,26 @@ public class GameTest {
 	}
 
 
+	@Test	
+	public void gamePlayTest() 
+	{
+		//assertEquals(true, game.gamePlay(player, map3));
+		//assertEquals(false, game.gamePlay(player, map4));
 
-	@Test
-	public void moveChecksTest()
+
+	}
+
+
+	@Test	
+	public void moveChecksTest() 
 	{
 		assertEquals(true, game.moveChecks(position1,player1, map3));
 		assertEquals(false, game.moveChecks(position1,player1, map2));
 
 	}
-
-	@Test
-	public void outOfMapTest()
+	
+	@Test	
+	public void outOfMapTest() 
 	{
 		assertEquals(true, game.outOfMap(position1, map));
 		assertEquals(true, game.outOfMap(position2, map));
@@ -61,8 +70,8 @@ public class GameTest {
 	}
 
 
-	@Test
-	public void inWaterTest()
+	@Test	
+	public void inWaterTest() 
 	{
 		assertEquals(false, game.inWater(position5, map1));
 		assertEquals(true, game.inWater(position6, map2));
@@ -70,7 +79,7 @@ public class GameTest {
 	}
 
 	@Test
-	public void setNumPlayersTest()
+	public void setNumPlayersTest() 
 	{
 		assertEquals(true, game.setNumPlayers(2));
 		assertEquals(true, game.setNumPlayers(5));
@@ -80,8 +89,8 @@ public class GameTest {
 		assertEquals(false, game.setNumPlayers(20));
 	}
 
-	@Test
-	public void noOfTileTest()
+	@Test	
+	public void noOfTileTest() 
 	{
 		assertEquals(false, game.noOfTiles(4, 2));
 		assertEquals(true, game.noOfTiles(7, 2));
@@ -92,12 +101,12 @@ public class GameTest {
 		assertEquals(false, game.noOfTiles(51, 8));
 	}
 
-	@Test
-	public void HTMLTest()
+	@Test	
+	public void HTMLTest() 
 	{
 		assertEquals("<td style = background-color:blue></td>", game.HTMLtile(player, map1,4,4));
 		assertEquals("<td style = background-color:green></td>", game.HTMLtile(player, map2,7,40));
 		assertEquals("<td style = background-color:gray><img src = \"http://s1.postimg.org/6kjevoygr/player.png\"></td>", game.HTMLtile(player, map3,2,4));
-	}
+	} 
 
 }
