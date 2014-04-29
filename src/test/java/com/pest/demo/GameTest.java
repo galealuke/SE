@@ -1,5 +1,4 @@
 package com.pest.demo;
-
 import static org.junit.Assert.*;
 
 import org.junit.Before;
@@ -53,8 +52,8 @@ public class GameTest {
 	{
 		map1.generate();
 		Map [] marray = game.copyMaps(map1, 2);
-		Player [] playerArray = createPlayers(mapArray, 2);
-		assertEquals('A',Map[0].getTileType(playerArray.getPosition().x,playerArray.getPosition().y));
+		Player [] playerArray = game.createPlayers(marray, 2);
+		assertEquals('X',marray[0].getTileType(playerArray[0].getPosition().x,playerArray[1].getPosition().y));
 	}
 
 
