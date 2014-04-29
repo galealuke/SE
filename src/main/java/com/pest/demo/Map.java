@@ -1,6 +1,6 @@
-package com.pest.demo; //-final
+package com.pest.demo;
 
-import java.util.*; 
+import java.util.*;
 public class Map
 {
     int size;
