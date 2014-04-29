@@ -13,7 +13,6 @@ public class Game
 		tiles = 0;
 	}
 
-<<<<<<< HEAD
     public void startGame()
     {
 =======
@@ -21,8 +20,8 @@ public class Game
 	public void startGame()
     {
        
->>>>>>> 40a91d899e46e9746e3501b6c285030b54c0d75f
-		int count =0;
+
+	int count =0;
         Scanner sc= new Scanner(System.in);
         System.out.println("Please enter the number of players (2-8):  ");
         int input=sc.nextInt();
@@ -38,7 +37,7 @@ public class Game
 				input = sc.nextInt();
 			}while(!(noOfTiles(input,noOfPlayers))); // to keep looping until no of tiles is entered correctly depending on the number of players
 			tiles = input;
-<<<<<<< HEAD
+
         }
         Map newMap = new Map(tiles);
         newMap.generate();
@@ -56,7 +55,7 @@ public class Game
     }
 
 	public Map[] copyMaps(Map newMap, int noOfPlayers)
-=======
+
         } 
         Map newMap = new Map(tiles);        
         newMap.generate();
@@ -76,7 +75,6 @@ public class Game
     }
 	
 	public Map[] copyMaps(Map newMap, int NoOfPlayers)
->>>>>>> 40a91d899e46e9746e3501b6c285030b54c0d75f
 	{
 		Map [] mapArray = new Map[8];
 		int count=0;
@@ -84,38 +82,32 @@ public class Game
 		{
 			mapArray[count]=new Map(newMap.size, newMap.square);
 		}
-<<<<<<< HEAD
 
 		return mapArray;
 	}
 
 	public Player[] createPlayers(Map [] mapArray, int noOfPlayers)
-=======
 		
 		return mapArray;
 	}
 	
 	public Player[] createPlayers(Map [] mapArray, int NoOfPlayers)
->>>>>>> 40a91d899e46e9746e3501b6c285030b54c0d75f
 	{
 		Player [] playerArray = new Player[8];
 		int count = 0;
 		for(count =0;count<noOfPlayers; count++ )  //create player objects
 		{
 			Player player = new Player(mapArray[count].randomGrassTile());
-<<<<<<< HEAD
 			playerArray[count]= player;
 		}
 		return playerArray;
 	}
 
-=======
 			playerArray[count]= player;		
 		}
 		return playerArray;
 	}
-    
->>>>>>> 40a91d899e46e9746e3501b6c285030b54c0d75f
+
     public void askForDirections(Player [] playerArray , Map [] mapArray)
     {
     	boolean win=false;
@@ -139,9 +131,6 @@ public class Game
 		System.out.println("The game has been won by "+endGame+" players");
     }
 
-<<<<<<< HEAD
-=======
-    //do gamePlay
 	
 	public  void HTMLfiles(Player player, Map map, int number)  //HTML display 
 	{
@@ -190,7 +179,6 @@ public class Game
 		print =print+"</td>";
 		return print;
 	}
->>>>>>> 40a91d899e46e9746e3501b6c285030b54c0d75f
 
 	public boolean gamePlay(Player player , Map map)
 	{
