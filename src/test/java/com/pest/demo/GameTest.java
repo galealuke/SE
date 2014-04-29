@@ -39,6 +39,23 @@ public class GameTest {
 		player1=new Player(2,4);
 
 	}
+	
+	@Test	
+	public void copyMapsTest() 
+	{
+		map1.generate();
+		Map [] marray = game.copyMaps(map1, 2);
+		assertEquals(marray[0].getTileType(0,0),marray[1].getTileType(0,0));
+	}
+	
+	@Test	
+	public void createPlayersTest() 
+	{
+		map1.generate();
+		Map [] marray = game.copyMaps(map1, 2);
+		Player [] playerArray = createPlayers(mapArray, 2);
+		assertEquals('A',Map[0].getTileType(playerArray.getPosition().x,playerArray.getPosition().y));
+	}
 
 
 	@Test	

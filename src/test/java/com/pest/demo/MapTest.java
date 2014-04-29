@@ -64,5 +64,5 @@ public class MapTest {
 		assertEquals('B', map6.uncover(5,4));
 
 	}
-
+	
 }
