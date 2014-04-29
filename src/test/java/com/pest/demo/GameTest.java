@@ -56,7 +56,7 @@ public class GameTest
 		map1.generate();
 		Map [] marray = game.copyMaps(map1, 2);
 		Player [] playerArray = game.createPlayers(marray, 2);
-		assertEquals('X',marray[0].getTileType(playerArray[0].getPosition().x,playerArray[1].getPosition().y));
+		assertEquals('A',marray[0].getTileType(playerArray[0].getPosition().x,playerArray[0].getPosition().y));
 	}
 
 	
