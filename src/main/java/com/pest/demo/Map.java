@@ -69,6 +69,43 @@ public class Map
 				return 'X';
 		}
     }
+	
+	public Position randomGrassTile()  //method to return a random starting position on grass
+    {
+        Random rand = new Random();
+        Position randomPos;
+		
+        int x = rand.nextInt(size);
+        int y = rand.nextInt(size);
+        if (getTileType(x, y)=='X')
+        { 
+            randomPos = new Position(x,y);
+			uncover(x,y);
+        }
+        else
+        { 
+            randomPos=randomGrassTile();      
+        }
+        return randomPos;
+    } 
+	
+	public char uncover(int x, int y)
+	{
+		char letter= 'A';
+		if (square[x][y] == 'X'){
+			square[x][y] = 'A'; 
+			 letter ='A';
+		}
+		if (square[x][y] == 'Y'){
+			square[x][y] = 'B'; 
+			letter ='B';
+		}
+		if (square[x][y] == 'Z'){
+			square[x][y] = 'C';
+			letter ='C';
+		}
+		return letter;
+	}
 
 	public Position randomGrassTile()  //method to return a random starting position on grass
     {

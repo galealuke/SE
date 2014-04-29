@@ -1,5 +1,8 @@
 package com.pest.demo;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 40a91d899e46e9746e3501b6c285030b54c0d75f
 import static org.junit.Assert.*;
 
 import org.junit.Before;
@@ -40,6 +43,23 @@ public class GameTest
 		map3.square[2][4]='Z';
 		player1=new Player(2,4);
 
+	}
+	
+	@Test	
+	public void copyMapsTest() 
+	{
+		map1.generate();
+		Map [] marray = game.copyMaps(map1, 2);
+		assertEquals(marray[0].getTileType(0,0),marray[1].getTileType(0,0));
+	}
+	
+	@Test	
+	public void createPlayersTest() 
+	{
+		map1.generate();
+		Map [] marray = game.copyMaps(map1, 2);
+		Player [] playerArray = game.createPlayers(marray, 2);
+		assertEquals('X',marray[0].getTileType(playerArray[0].getPosition().x,playerArray[1].getPosition().y));
 	}
 
 	@Test
