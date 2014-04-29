@@ -67,9 +67,5 @@ public class MapTest
 		assertEquals('B', map6.uncover(5,4));
 
 	}
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 40a91d899e46e9746e3501b6c285030b54c0d75f
 }

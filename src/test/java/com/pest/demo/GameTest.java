@@ -1,8 +1,5 @@
 package com.pest.demo;
-<<<<<<< HEAD
 
-=======
->>>>>>> 40a91d899e46e9746e3501b6c285030b54c0d75f
 import static org.junit.Assert.*;
 
 import org.junit.Before;
