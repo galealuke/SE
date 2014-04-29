@@ -1,5 +1,3 @@
-
-
 package com.pest.demo;
 
 public class Position
@@ -12,5 +10,6 @@ public class Position
 		x=x1;
 		y=y1;
 	}
+
 
 }
