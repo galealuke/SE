@@ -50,15 +50,6 @@ public class GameTest
 		assertEquals(marray[0].getTileType(0,0),marray[1].getTileType(0,0));
 	}
 
-	@Test	
-	public void createPlayersTest() 
-	{
-		map1.generate();
-		Map [] marray = game.copyMaps(map1, 2);
-		Player [] playerArray = game.createPlayers(marray, 2);
-		assertEquals('X',marray[0].getTileType(playerArray[0].getPosition().x,playerArray[1].getPosition().y));
-	}
-
 
 	@Test	
 	public void moveChecksTest() 
