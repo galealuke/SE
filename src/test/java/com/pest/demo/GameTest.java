@@ -45,10 +45,10 @@ public class GameTest
 	@Test	
 	public void createPlayersTest() 
 	{
+
 		assertEquals(true, game.createPlayers(newMap,4));
 		
 	}
-
 
 
 	@Test
