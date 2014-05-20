@@ -1,4 +1,4 @@
-package com.pest.demo;
+//package com.pest.demo;
 
 import static org.junit.Assert.*;
 
@@ -10,9 +10,10 @@ public class GameTest
 
 	Game game;
 
-	Map map,map1,map2,map3,map4;
+	SafeMap newMap = SafeMap.getInstance(50);
 
 	Player player,player1;
+	Team team = new Team();
 
 
 	Position position1,position2,position3,position4,position5,position6,position7,position8;
@@ -21,86 +22,67 @@ public class GameTest
 	public void setUp() throws Exception
 	{
 		game= new Game();
-		map = new Map(20);
-		position1=new Position(5,10);
+		
+		position1=new Position(7,40);
 		position2=new Position(0,0);
 		position3=new Position(25,-1);
 		position4=new Position(4,21);
-
-		map1 = new Map(40);
-		position5=new Position(4,4);
-		map1.square[4][4]='B';
-
-		map2 = new Map(50);
-		position6=new Position(7,40);
-		map2.square[7][40]='A';
-
-		map3 = new Map(40);
-		player=new Player(2,4);
-		map3.square[2][4]='Z';
-		player1=new Player(2,4);
+		player = new Player(position1,team,1);
+		
+		game.noOfPlayers=3;
+		game.noOfTeams = 2;
+		game.teamArray = new Team[game.noOfTeams];
+		for(int count =0;count<game.noOfTeams; count++ )
+			game.teamArray[count]=new Team();
+		game.createPlayers(newMap,3);
+		
+		newMap.square[7][40]='Z';
+		newMap.square[0][0]='Y';
+		newMap.square[4][21]='X';
 
 	}
-	
-	@Test	
-	public void copyMapsTest() 
-	{
-		map1.generate();
-		Map [] marray = game.copyMaps(map1, 2);
-		assertEquals(marray[0].getTileType(0,0),marray[1].getTileType(0,0));
-	}
-	
+
 	@Test	
 	public void createPlayersTest() 
 	{
-		map1.generate();
-		Map [] marray = game.copyMaps(map1, 2);
-		Player [] playerArray = game.createPlayers(marray, 2);
-		assertEquals('X',marray[0].getTileType(playerArray[0].getPosition().x,playerArray[1].getPosition().y));
+		assertEquals(true, game.createPlayers(newMap,4));
+		
 	}
 
-	@Test
-	public void copyMapsTest()
-	{
-		map1.generate();
-		Map [] marray = game.copyMaps(map1, 2);
-		assertEquals(marray[0].getTileType(0,0),marray[1].getTileType(0,0));
-	}
-
-	@Test
-	public void createPlayersTest()
-	{
-		map1.generate();
-		Map [] marray = game.copyMaps(map1, 2);
-		Player [] playerArray = game.createPlayers(marray, 2);
-		assertEquals('X',marray[0].getTileType(playerArray[0].getPosition().x,playerArray[1].getPosition().y));
-	}
 
 
 	@Test
 	public void moveChecksTest()
-	{
-		assertEquals(true, game.moveChecks(position1,player1, map3));
-		assertEquals(false, game.moveChecks(position1,player1, map2));
-
+	{		
+		assertEquals(true, game.moveChecks(position1,player, newMap));
+		player.setPosition(position2);
+		assertEquals(false, game.moveChecks(position2,player, newMap));
 	}
 
 	@Test
 	public void outOfMapTest()
 	{
-		assertEquals(true, game.outOfMap(position1, map));
-		assertEquals(true, game.outOfMap(position2, map));
-		assertEquals(false, game.outOfMap(position3, map));
-		assertEquals(false, game.outOfMap(position4, map));
+		assertEquals(true, game.outOfMap(position1, newMap));
+		assertEquals(false, game.outOfMap(position3, newMap));
 	}
 
 
 	@Test
 	public void inWaterTest()
 	{
-		assertEquals(false, game.inWater(position5, map1));
-		assertEquals(true, game.inWater(position6, map2));
+		assertEquals(false, game.inWater(position2, newMap));
+		assertEquals(true, game.inWater(position1, newMap));
+		assertEquals(true, game.inWater(position4, newMap));
 	}
+	
+	@Test
+	public void selectMapTest()
+	{
+		assertEquals(true, game.selectMapCheck(1));
+		assertEquals(true, game.selectMapCheck(2));
+		assertEquals(false, game.selectMapCheck(4));
+	}
+
 
 	@Test
 	public void setNumPlayersTest()
@@ -124,13 +106,28 @@ public class GameTest
 		assertEquals(true, game.noOfTiles(50, 8));
 		assertEquals(false, game.noOfTiles(51, 8));
 	}
-
+	
+	@Test
+	public void setNumTeamsTest()
+	{
+		assertEquals(true, game.setNumTeams(1));
+		assertEquals(false, game.setNumTeams(4));
+	}
+	
 	@Test
 	public void HTMLTest()
 	{
-		assertEquals("<td style = background-color:blue></td>", game.HTMLtile(player, map1,4,4));
-		assertEquals("<td style = background-color:green></td>", game.HTMLtile(player, map2,7,40));
-		assertEquals("<td style = background-color:gray><img src = \"http://s1.postimg.org/6kjevoygr/player.png\"></td>", game.HTMLtile(player, map3,2,4));
+		assertEquals("<td style = background-color:gray></td>", game.HTMLtile(player, newMap,4,4));
+		player.addPositionVisited(position4);
+		assertEquals("<td style = background-color:green></td>", game.HTMLtile(player, newMap,4,21));
+		player.addPositionVisited(position1);
+		player.setPosition(position4);
+		assertEquals("<td style = background-color:yellow></td>", game.HTMLtile(player, newMap,7,40));
+		player.addPositionVisited(position2);
+		assertEquals("<td style = background-color:blue></td>", game.HTMLtile(player, newMap,0,0));
+		assertEquals("<td style = background-color:green><img src = \"http://s1.postimg.org/6kjevoygr/player.png\"></td>", game.HTMLtile(player, newMap,4,21));
+		
+		
 	}
 
 }
