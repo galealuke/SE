@@ -1,4 +1,5 @@
-//package com.pest.demo;
+package com.pest.demo;
+
 import java.util.*;
 
 public class Player extends Observer
