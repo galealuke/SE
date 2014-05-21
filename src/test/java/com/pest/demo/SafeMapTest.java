@@ -1,4 +1,4 @@
-//package com.pest.demo;
+package com.pest.demo;
 
 import static org.junit.Assert.*;
 
