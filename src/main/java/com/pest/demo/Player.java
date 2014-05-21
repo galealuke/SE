@@ -1,22 +1,36 @@
-package com.pest.demo;
+//package com.pest.demo;
+import java.util.*;
 
-public class Player
+public class Player extends Observer
 {
 
 	
 	Position position;
 	
 	Position startingPosition;
-
-	public Player(Position positionInput){
+	
+	int team;
+	Subject subject;
+	
+	 ArrayList<Position> positionsVisited;
+	 
+	public Player(Position positionInput,Subject team, int teamNo)
+	{
 		position = positionInput;
 		startingPosition = positionInput;
+		positionsVisited=new ArrayList<Position>();
+		//addPositionVisited(startingPosition); 
+		this.team = teamNo;	
+		this.subject = team;
+		this.subject.attach(this);
 	}
 
-	public Player(int x, int y){
+	/*public Player(int x, int y){
 		position = new Position(x,y);
 		startingPosition = new Position(x,y);
-	} 
+		positionsVisited=new ArrayList<Position>();
+		addPositionVisited(startingPosition); 
+	}*/
 		
 
 	public boolean setPosition(Position p)
@@ -28,6 +42,27 @@ public class Player
 	public Position getPosition()
 	{
 		return position;
+	}
+	
+	public int getTeam()
+	{
+		return team;
+	}
+	
+	public void addPositionVisited(Position P)
+	{
+		positionsVisited.add(P);
+	}
+	
+	public boolean ifVisitedPosition(Position P)
+	{
+		for (int i=0; i<positionsVisited.size(); i++)
+		{
+			Position newPos = positionsVisited.get(i);
+			if ((P.x==newPos.x)&&(P.y==newPos.y))
+				return true;
+		}
+		return false;
 	}
 	
 	public void move( char direction ) 
@@ -59,5 +94,11 @@ public class Player
 			default:
 				break;
 		}
+	}
+
+	@Override
+	public void update(Position pos) {
+		addPositionVisited(pos);
+		
 	}
 }

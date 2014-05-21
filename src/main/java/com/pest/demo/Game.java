@@ -1,4 +1,4 @@
-package com.pest.demo;
+//package com.pest.demo;
 
 import java.util.*;
 import java.io.*;
@@ -6,7 +6,10 @@ public class Game {
 
 	 int noOfPlayers; 
      int tiles;
-   
+     int noOfTeams;
+     Player [] playerArray;
+     Team [] teamArray;
+     
 	public Game()  //game constructor
 	{
 		noOfPlayers=0;
@@ -18,63 +21,110 @@ public class Game {
        
 		int count =0;
         Scanner sc= new Scanner(System.in);
-        System.out.println("Please enter the number of players (2-8):  ");
-        int input=sc.nextInt();
-        if (!setNumPlayers(input)) //to make sure that input is between 2 and 8 players
-        {
-            startGame();
-        }
-        else //if the no of players is entered correctly
-        {
-            do
-			{
-            	System.out.println("Please enter the number of tiles : ");
-				input = sc.nextInt();
-			}while(!(noOfTiles(input,noOfPlayers))); // to keep looping until no of tiles is entered correctly depending on the number of players
-			tiles = input;
-        } 
-        Map newMap = new Map(tiles);        
-        newMap.generate();
+        int level=0;
+        do
+		{
+        	System.out.println("Select the Map level (1-Safe , 2 - Hazardous)");
+			level = sc.nextInt(); //check the user enters 1 or 2
+		}while(!(selectMapCheck(level))); 
+        int input = 0;
+        do
+      	{
+        	System.out.println("Please enter the number of players (2-8):  ");
+        	input=sc.nextInt(); //check the user enters correct no of players
+      	}while(!(setNumPlayers(input)));  
+        do
+      	{
+        	System.out.println("Please enter the number of teams: ");
+        	input=sc.nextInt(); //check the user enters teams less than the ammount of players
+      	}while(!(setNumTeams(input)));          
+        do
+		{
+            System.out.println("Please enter the number of tiles : ");
+			input = sc.nextInt();
+		}while(!(noOfTiles(input,noOfPlayers))); // to keep looping until no of tiles is entered correctly depending on the number of players
+		tiles = input;
+		MapFactory mf = new MapFactory();
+		       
+        Map newMap = mf.getMap(level, tiles);
 		
-		Map [] mapArray = copyMaps(newMap,noOfPlayers);
-						
-		Player [] playerArray = createPlayers(mapArray, noOfPlayers);		
+		teamArray = new Team[noOfTeams]; //create array of teams
+		for(count =0;count<noOfTeams; count++ )
+			teamArray[count]=new Team();
+		
+        createPlayers(newMap, noOfPlayers);	//create the array of players
 							
 		for(count =0;count<noOfPlayers; count++ ) 
 		{		
-			HTMLfiles(playerArray[count],mapArray[count],count);		
+			HTMLfiles(playerArray[count],newMap,count);		//generate all html files
 		}
 		
-		askForDirections(playerArray , mapArray); //ask each player for directions
+		askForDirections(playerArray , newMap); //ask each player for directions
 			
 		
     }
+    
+    
+
+	public boolean selectMapCheck(int level) //check the correct input is entered..
+    {
+    	if ((level == 1)||(level==2))
+    		return true;
+    	else
+    		return false;
+    }
 	
-	public Map[] copyMaps(Map newMap, int noOfPlayers)
-	{
-		Map [] mapArray = new Map[8];
-		int count=0;
-		for(count =0;count<noOfPlayers; count++ )  //create a map for each player
-		{
-			mapArray[count]=new Map(newMap.size, newMap.square);
-		}
-		
-		return mapArray;
-	}
 	
-	public Player[] createPlayers(Map [] mapArray, int noOfPlayers)
+	public boolean createPlayers(Map map, int noOfPlayers)
 	{
-		Player [] playerArray = new Player[8];
+		playerArray = new Player[8];
 		int count = 0;
 		for(count =0;count<noOfPlayers; count++ )  //create player objects
 		{
-			Player player = new Player(mapArray[count].randomGrassTile());
+			int teamNo = randomTeam(count);
+			Subject tempTeam = teamArray[teamNo];
+			Player player = new Player(map.randomGrassTile(),tempTeam,teamNo); //assign random team to a player
 			playerArray[count]= player;		
 		}
-		return playerArray;
+		
+		for(count =0;count<noOfPlayers; count++ ) //show the starting position to all players
+		{
+			teamArray[playerArray[count].getTeam()].setState(playerArray[count].position);//this should update all the other maps
+		}
+		return true;
+	}
+	
+	private int randomTeam(int n)  //method to return a random team in a way that all teams are used
+	{
+		Random rand = new Random();
+		int team;
+		if (n>=noOfTeams) //if all teams have been used at least once
+		{
+			team = rand.nextInt(noOfTeams);
+		}
+		else
+		{
+			team = rand.nextInt(noOfTeams);
+			while(checkTeams(team, n)==true)//if not all teams have been used
+			{	
+				team = rand.nextInt(noOfTeams);
+			}
+			
+		}
+		return team;
+	}
+
+	public boolean checkTeams(int team, int playersUsed) //returns true if
+	{
+		for (int count = 0; count < playersUsed; count++)
+		{
+			if(playerArray[count].getTeam()==team)
+				return true;
+		}
+		return false;
 	}
     
-    public void askForDirections(Player [] playerArray , Map [] mapArray)
+    public void askForDirections(Player [] playerArray , Map map)
     {
     	boolean win=false;
 		int endGame = 0;
@@ -83,18 +133,23 @@ public class Game {
 		do{
 			for(count =0;count<noOfPlayers; count++ ) //to move each player in turns
 			{
-				System.out.println("Enter a direction you want to move, Player "+count+"( l/r/u/d) : " );
-				win = gamePlay(playerArray[count],mapArray[count]); 
+				System.out.println("Enter a direction you want to move, Player "+count+" from team "+playerArray[count].getTeam()+ "( l/r/u/d) : " );
+				win = gamePlay(playerArray[count],map); 
 				if (win == true) 
 				{
 					System.out.println("Player "+ count + " Wins!");
 					endGame ++;
 				}
-				HTMLfiles(playerArray[count],mapArray[count],count);
+				
+				for(int i =0;i<noOfPlayers; i++ ) 
+				{		
+					HTMLfiles(playerArray[i],map,i);		
+				}
+				
 			}
 			
 		}while(endGame==0); //to keep moving players until player(s) win
-		System.out.println("The game has been won by "+endGame+" players");
+		System.out.println("The game has been won by "+endGame+" player(s)");
     }
     
 
@@ -119,13 +174,16 @@ public class Game {
 			return gamePlay(player,map);
 		}
 		else if(!(inWater(player.getPosition(),map)))
-		{				
+		{	
+			//addTeamPositionVisited(player);
+			teamArray[player.getTeam()].setState(player.position);//this should update all the other maps
 			player.setPosition(player.startingPosition); //if player falls in the water it starts again from the initial position
 			return false;
 		}
 		else  //if it is safe to move
 		{
-			map.uncover((player.getPosition().x),(player.getPosition().y));  //uncover the new grass tile
+			//addTeamPositionVisited(player);
+			teamArray[player.getTeam()].setState(player.position);//this should update all the other maps
 			if (map.getTileType((player.getPosition().x),(player.getPosition().y))=='Z'||map.getTileType((player.getPosition().x),(player.getPosition().y))=='C') //if player finds the treasure
 			{
 				return true;
@@ -136,7 +194,7 @@ public class Game {
 	
 	public boolean outOfMap(Position newPosition, Map map)
 	{
-			if(((newPosition.x)>map.size-1)||((newPosition.x)<0)||((newPosition.y)>map.size-1)||((newPosition.y)<0))
+			if(((newPosition.x)>map.getSize()-1)||((newPosition.x)<0)||((newPosition.y)>map.getSize()-1)||((newPosition.y)<0))
 			{
 				System.out.println("Error, Out of map, please enter direction again:");
 				return false;
@@ -153,7 +211,7 @@ public class Game {
 		 if (map.getTileType(newPosition.x,newPosition.y)=='Y'||map.getTileType(newPosition.x,newPosition.y)=='B')
 		 {
 			System.out.println("Oops! You fell in the water..");
-			map.uncover(newPosition.x,newPosition.y);
+					
 			return false;
 		 }
 		 else
@@ -162,6 +220,17 @@ public class Game {
 		 }
 	
 	}
+	
+	/*public void addTeamPositionVisited(Player player)
+	{
+		for (int i = 0; i < noOfPlayers; i++)
+		{
+			if(playerArray[i].getTeam()==player.getTeam())
+			{
+				playerArray[i].addPositionVisited(player.getPosition());
+			}
+		}
+	}*/
 	
 	public  void HTMLfiles(Player player, Map map, int number)  //HTML display 
 	{
@@ -193,14 +262,16 @@ public class Game {
 	public String HTMLtile(Player player, Map map, int i, int j)
 	{
 		String print=null;
-	
-		if (map.getTileType(i,j)=='X' || map.getTileType(i,j)=='Y' || map.getTileType(i,j)=='Z')
+		Position p = new Position(i,j);
+		if (!(player.ifVisitedPosition(p))) 
+		{
 			print = "<td style = background-color:gray>"; //if XYZ then background gray
-		if (map.getTileType(i,j)=='A')
+		} 	
+		else if (map.getTileType(i,j)=='X')
 			print = "<td style = background-color:green>";
-		if (map.getTileType(i,j)=='B')
+		else if (map.getTileType(i,j)=='Y')
 			print = "<td style = background-color:blue>";
-		else if (map.getTileType(i,j)=='C')
+		else if (map.getTileType(i,j)=='Z')
 			print = "<td style = background-color:yellow>";
 			
 		if(((player.getPosition().x)==i)&&((player.getPosition().y)==j))
@@ -214,7 +285,7 @@ public class Game {
 	
 	public boolean setNumPlayers(int n)
 	{
-		if (n < 2 || n >8)
+		if (n < 2|| n >8)
 		{
 			return false;
 		}
@@ -224,6 +295,18 @@ public class Game {
 			return true;
 		}
 	
+	}
+	
+	public boolean setNumTeams(int teams) {
+		if (teams>noOfPlayers)
+		{
+			return false;
+		}
+		else
+		{			
+			noOfTeams=teams;
+			return true;
+		}
 	}
     
 	
