@@ -7,10 +7,9 @@ public class SafeMap implements Map
 	int size;
     char[][] square;
     
-    public SafeMap()
+    private SafeMap()
     {
-    	/*size = sizeInput;
-    	square = new char[sizeInput][sizeInput];*/
+    	
     }
     
     private static SafeMap instance = new SafeMap();

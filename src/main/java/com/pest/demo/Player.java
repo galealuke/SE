@@ -4,8 +4,6 @@ import java.util.*;
 
 public class Player extends Observer
 {
-
-	
 	Position position;
 	
 	Position startingPosition;
@@ -20,19 +18,10 @@ public class Player extends Observer
 		position = positionInput;
 		startingPosition = positionInput;
 		positionsVisited=new ArrayList<Position>();
-		//addPositionVisited(startingPosition); 
 		this.team = teamNo;	
 		this.subject = team;
 		this.subject.attach(this);
-	}
-
-	/*public Player(int x, int y){
-		position = new Position(x,y);
-		startingPosition = new Position(x,y);
-		positionsVisited=new ArrayList<Position>();
-		addPositionVisited(startingPosition); 
-	}*/
-		
+	}	
 
 	public boolean setPosition(Position p)
 	{

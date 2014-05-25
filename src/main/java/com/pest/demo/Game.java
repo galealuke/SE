@@ -35,7 +35,7 @@ public class Game {
       	}while(!(setNumPlayers(input)));  
         do
       	{
-        	System.out.println("Please enter the number of teams: ");
+        	System.out.println("Please enter the number of teams (for single player enter the same ammount as players)");
         	input=sc.nextInt(); //check the user enters teams less than the ammount of players
       	}while(!(setNumTeams(input)));          
         do
@@ -61,7 +61,7 @@ public class Game {
 		
 		askForDirections(playerArray , newMap); //ask each player for directions
 			
-		
+		sc.close();
     }
     
     
@@ -159,6 +159,7 @@ public class Game {
 		Scanner sc = new Scanner(System.in);
 		char input='a';
 		input = sc.next().charAt(0);
+		sc.close();
 		Position oldPosition = new Position((player.getPosition().x),(player.getPosition().y)); //save the old player position  
 		player.move(input);  //change player position 
 
@@ -175,14 +176,12 @@ public class Game {
 		}
 		else if(!(inWater(player.getPosition(),map)))
 		{	
-			//addTeamPositionVisited(player);
 			teamArray[player.getTeam()].setState(player.position);//this should update all the other maps
 			player.setPosition(player.startingPosition); //if player falls in the water it starts again from the initial position
 			return false;
 		}
 		else  //if it is safe to move
 		{
-			//addTeamPositionVisited(player);
 			teamArray[player.getTeam()].setState(player.position);//this should update all the other maps
 			if (map.getTileType((player.getPosition().x),(player.getPosition().y))=='Z'||map.getTileType((player.getPosition().x),(player.getPosition().y))=='C') //if player finds the treasure
 			{
@@ -221,16 +220,6 @@ public class Game {
 	
 	}
 	
-	/*public void addTeamPositionVisited(Player player)
-	{
-		for (int i = 0; i < noOfPlayers; i++)
-		{
-			if(playerArray[i].getTeam()==player.getTeam())
-			{
-				playerArray[i].addPositionVisited(player.getPosition());
-			}
-		}
-	}*/
 	
 	public  void HTMLfiles(Player player, Map map, int number)  //HTML display 
 	{

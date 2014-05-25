@@ -8,10 +8,9 @@ public class HazardousMap implements Map
 	int size;
     char[][] square;
     
-    public HazardousMap()
+    private HazardousMap()
     {
-    	/*size = sizeInput;
-    	square = new char[sizeInput][sizeInput];*/
+    	
     }
     
     private static HazardousMap instance = new HazardousMap();
