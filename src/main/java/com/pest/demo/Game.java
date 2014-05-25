@@ -60,8 +60,6 @@ public class Game {
 		}
 		
 		askForDirections(playerArray , newMap); //ask each player for directions
-			
-		sc.close();
     }
     
     
@@ -159,7 +157,6 @@ public class Game {
 		Scanner sc = new Scanner(System.in);
 		char input='a';
 		input = sc.next().charAt(0);
-		sc.close();
 		Position oldPosition = new Position((player.getPosition().x),(player.getPosition().y)); //save the old player position  
 		player.move(input);  //change player position 
 
